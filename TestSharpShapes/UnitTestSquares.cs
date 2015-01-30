@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharpShapes;
+using System.Windows.Media;
 
 namespace TestSharpShapes
 {
@@ -121,8 +122,8 @@ namespace TestSharpShapes
         public void TestDefaultColors()
         {
             Square shape = new Square(15);
-            Assert.AreEqual(System.Drawing.Color.Bisque, shape.FillColor);
-            Assert.AreEqual(System.Drawing.Color.Tomato, shape.BorderColor);
+            Assert.AreEqual(Colors.Bisque, shape.FillColor);
+            Assert.AreEqual(Colors.Tomato, shape.BorderColor);
         }
     }
 }

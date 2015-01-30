@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharpShapes;
-using System.Drawing;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace TestSharpShapes
 {
@@ -29,36 +30,41 @@ namespace TestSharpShapes
             {
                 throw new NotImplementedException();
             }
+
+            public override void DrawOnto(Canvas ShapeCanvas, int x, int y)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [TestMethod]
         public void TestSettingBorderColor()
         {
             Shape shape = new MyShape();
-            shape.BorderColor = Color.AliceBlue;
-            Assert.AreEqual(Color.AliceBlue, shape.BorderColor);
+            shape.BorderColor = Colors.AliceBlue;
+            Assert.AreEqual(Colors.AliceBlue, shape.BorderColor);
         }
 
         [TestMethod]
         public void TestDefaultBorderColor()
         {
             Shape shape = new MyShape();
-            Assert.AreEqual(Color.Tomato, shape.BorderColor);
+            Assert.AreEqual(Colors.Tomato, shape.BorderColor);
         }
 
         [TestMethod]
         public void TestSettingFillColor()
         {
             Shape shape = new MyShape();
-            shape.FillColor = Color.AliceBlue;
-            Assert.AreEqual(Color.AliceBlue, shape.FillColor);
+            shape.FillColor = Colors.AliceBlue;
+            Assert.AreEqual(Colors.AliceBlue, shape.FillColor);
         }
 
         [TestMethod]
         public void TestDefaultFillColor()
         {
             Shape shape = new MyShape();
-            Assert.AreEqual(Color.Bisque, shape.FillColor);
+            Assert.AreEqual(Colors.Bisque, shape.FillColor);
         }
     }
 }
