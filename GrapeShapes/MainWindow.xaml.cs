@@ -30,13 +30,18 @@ namespace GrapeShapes
 
         public static int ArgumentCountFor(string className)
         {
-            Type classType = Assembly.GetAssembly(typeof(Shape)).GetTypes().Where( shapeType => shapeType.Name == className).First();
+            Type classType = GetShapeTypeOf(className);
             ConstructorInfo classConstructor = classType.GetConstructors().First();
             return classConstructor.GetParameters().Length;
         }
 
+        private static Type GetShapeTypeOf(string className)
+        {
+            return Assembly.GetAssembly(typeof(Shape)).GetTypes().Where(shapeType => shapeType.Name == className).First();
+        }
+
         public static Shape InstantiateWithArguments(string className, object[] args){
-            Type classType = Type.GetType(className);
+            Type classType = GetShapeTypeOf(className);
             ConstructorInfo classConstructor = classType.GetConstructors().First();
             return (Shape)classConstructor.Invoke(args);
         }
@@ -69,15 +74,15 @@ namespace GrapeShapes
         }
 
 
-        private void DrawSquare(int x, int y, Square size)
+        private void DrawSquare(int x, int y, Square square)
         {
             System.Windows.Shapes.Polygon myPolygon = new System.Windows.Shapes.Polygon();
 
             SolidColorBrush border = new SolidColorBrush();
-            border.Color = Color.FromArgb(size.BorderColor.A, size.BorderColor.R, size.BorderColor.G, size.BorderColor.B);
+            border.Color = Color.FromArgb(square.BorderColor.A, square.BorderColor.R, square.BorderColor.G, square.BorderColor.B);
 
             SolidColorBrush fill = new SolidColorBrush();
-            fill.Color = Color.FromArgb(size.FillColor.A, size.FillColor.R, size.FillColor.G, size.FillColor.B);
+            fill.Color = Color.FromArgb(square.FillColor.A, square.FillColor.R, square.FillColor.G, square.FillColor.B);
 
             myPolygon.Stroke = border;
             myPolygon.Fill = fill;
@@ -85,9 +90,9 @@ namespace GrapeShapes
             myPolygon.HorizontalAlignment = HorizontalAlignment.Left;
             myPolygon.VerticalAlignment = VerticalAlignment.Center;
             Point point1 = new Point(x, y);
-            Point point2 = new Point(x, y + (double)size.Width);
-            Point point3 = new Point(x + (double)size.Width, y + (double)size.Width);
-            Point point4 = new Point(x + (double)size.Width, y);
+            Point point2 = new Point(x, y + (double)square.Width);
+            Point point3 = new Point(x + (double)square.Width, y + (double)square.Width);
+            Point point4 = new Point(x + (double)square.Width, y);
 
             PointCollection myPointCollection = new PointCollection();
             myPointCollection.Add(point1);
@@ -122,7 +127,6 @@ namespace GrapeShapes
             ShapeCanvas.Children.Add(myPolygon);
         }
 
-
         private void ShapeType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string className = (String) ShapeType.SelectedValue;
@@ -130,9 +134,19 @@ namespace GrapeShapes
             Argument1.IsEnabled = true;
             Argument2.IsEnabled = (argCount > 1);
             Argument3.IsEnabled = (argCount > 2);
-            Argument1.Clear();
-            Argument2.Clear();
-            Argument3.Clear();
+            Argument1.Text = "0";
+            Argument2.Text = "0";
+            Argument3.Text = "0";
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string className = (String)ShapeType.SelectedValue;
+            int argCount = ArgumentCountFor(className);
+            object[] potentialArgs = new object[] { Int32.Parse(Argument1.Text), Int32.Parse(Argument2.Text), Int32.Parse(Argument3.Text) };
+            Shape shape = InstantiateWithArguments(className, potentialArgs.Take(argCount).ToArray());
+            DrawSquare(50, 50, shape as Square);
+            // GOAL: shape.DrawOnto(ShapeCanvas, 50, 50);
         }
     }
 }
