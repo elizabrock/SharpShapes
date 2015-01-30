@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Windows.Controls;
 
 namespace SharpShapes
 {
@@ -35,6 +36,14 @@ namespace SharpShapes
         /// </summary>
         /// <returns>the area of the shape</returns>
         abstract public decimal Area();
+
+        /// <summary>
+        /// Creates a polygon representing this shape and adds it to the ShapeCanvas.
+        /// </summary>
+        /// <param name="ShapeCanvas">The Canvas on which to draw this Shape.</param>
+        /// <param name="x">The x-coordinate on which to place the upper-left corner of the shape.</param>
+        /// <param name="y">The y-coordinate on which to place the upper-left corner of the shape.</param>
+        abstract public void DrawOnto(Canvas ShapeCanvas, int x, int y);
 
         /// <summary>
         /// Calculates the perimeter of the shape.
